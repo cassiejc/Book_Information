@@ -9,18 +9,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private Button button_begin;
     private EditText editText_username;
-    private DatabaseHelper dbHelper;
+//    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page1);
 
-        dbHelper = new DatabaseHelper(this);
+//        dbHelper = new DatabaseHelper(this);
 
         button_begin=findViewById(R.id.button_begin);
         editText_username = findViewById(R.id.editText_username);
@@ -29,19 +30,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String username = editText_username.getText().toString();
-                saveUsername(username);
+//                saveUsername(username);
 
-                Intent i = new Intent(MainActivity.this, page2.class);
-                startActivity(i);
+                if (!username.isEmpty()) {
+                    Intent i = new Intent(MainActivity.this, page2.class);
+                    startActivity(i);
+                    Toast.makeText(MainActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                } else {
+                    editText_username.setError("Username can not empty");
+                }
+
+
             }
         });
     }
 
-    private void saveUsername(String username){
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_USERNAME, username);
-        db.insert(DatabaseHelper.TABLE_USER, null, values);
-        db.close();
-    }
+//    private void saveUsername(String username){
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put(DatabaseHelper.COLUMN_USERNAME, username);
+//        db.insert(DatabaseHelper.TABLE_USER, null, values);
+//        db.close();
+//    }
 }
